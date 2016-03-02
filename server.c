@@ -68,8 +68,10 @@ void  run(void){
             return;
         }
         else{
-            if (fork() == 0){        //just fuck for fun
+            if (fork() == 0){
+                close(listener);
                 child(fd);
+                close(fd);
                 exit(0);
             }
         }

@@ -7,7 +7,6 @@
 
 void child(const char *,struct sockaddr_in *);
 int main() {
-    const char *send_strs[] = {"ab123\n","cd123\n","ef123\n","gh123\n","AB123\n","CD123\n","EF123\n"};
     const char *server = "127.0.0.1";
     struct sockaddr_in sin;
     memset(&sin, sizeof(sin),0);
@@ -27,7 +26,8 @@ int main() {
     char *line = NULL;
     size_t  len = 0;
     while(getline(&line,&len,fp) != -1){
-        if(fork() == 0){
+        if(fork() == 0){                 //just fuck for fun
+            fclose(fp);
             child(line,&sin);
             exit(0);
         }
@@ -82,4 +82,5 @@ void  child(const char* str ,struct sockaddr_in *sin){
     buf[strlen(str)] = '\0';
     fwrite(buf,strlen(buf),1,stdout);
     free(buf);
+    close(sockfd);
 }
